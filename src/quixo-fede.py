@@ -64,6 +64,7 @@ class Quixo:
   def move_row_to_direction(self, move, direction): # direction = +1 | -1 
     # +1 = to right
     # -1 = to left
+
     current_pos = BORDER_INDEXES[move[0]]
     to_move_pos = BORDER_INDEXES[move[1]]
 
@@ -94,6 +95,15 @@ class Quixo:
       self.board[x + direction][y] = current_cell
       to_swap_cell = (x + direction, y)
 
+  def show(self):
+    print('\n')
+    for row in self.board:
+      [print('|', cell.show(), '', end = '') for cell in row ]
+      print('|', end = '')
+      print('')
+    print('-----------------------------')
+    
+
 class Cell:
   def __init__(self, row, column):
     self.symbol = 'empty'
@@ -102,6 +112,9 @@ class Cell:
 
   def update_symbol(self, player):
     self.symbol = player
+
+  def show(self):
+    print(self.symbol)
 
   def index(self):
     if (self.row, self.column) in BORDER_INDEXES:
