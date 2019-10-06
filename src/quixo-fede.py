@@ -72,10 +72,9 @@ class Quixo:
       x, y = current_pos
       current_cell = self.board[x][y]
       to_swap_cell = self.board[x][y + direction]
-      current_cell.update_pos(x, y + direction)
-      to_swap_cell.update_pos(x, y)
-      self.board[x][y] = to_swap_cell
-      self.board[x][y + direction] = current_cell
+      current_cell_symbol = current_cell.symbol
+      current_cell.update_symbol(to_swap_cell.symbol)
+      to_swap_cell.update_symbol(current_cell_symbol)
       current_pos = (x, y + direction)
 
   def move_column_to_direction(self, move, direction): # direction = +1 | -1 
@@ -89,10 +88,9 @@ class Quixo:
       x, y = current_pos
       current_cell = self.board[x][y]
       to_swap_cell = self.board[x + direction][y]
-      current_cell.update_pos(x + direction, y)
-      to_swap_cell.update_pos(x, y)
-      self.board[x][y] = to_swap_cell
-      self.board[x + direction][y] = current_cell
+      current_cell_symbol = current_cell.symbol
+      current_cell.update_symbol(to_swap_cell.symbol)
+      to_swap_cell.update_symbol(current_cell_symbol)
       current_pos = (x + direction, y)
 
   def show(self):
@@ -130,10 +128,3 @@ class Cell:
 
   def is_valid_border(self, player):
     return self.symbol == 'empty' or self.symbol == player
-
-
-bla = Quixo()
-bla.show()
-print('all_valid_moves(x)', bla.all_valid_moves('x'))
-bla.apply_move('x', (11, 8))
-bla.show()
