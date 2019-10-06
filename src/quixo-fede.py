@@ -8,14 +8,14 @@ class Quixo:
     self.board = [[Cell(row, column) for row in range(5)] for column in range(5)]
 
   def valid_borders(self, player):
-    filter(lambda cell: cell.is_valid_border(player), map(lambda t: self.board[t[0]][t[1]], BORDER_INDEXES))
+    return list(filter(lambda cell: cell.is_valid_border(player), map(lambda t: self.board[t[0]][t[1]], BORDER_INDEXES)))
 
   def all_valid_moves(self, player):
-    [move for cell in self.valid_borders(player) for move in self.valid_moves_for_cell(cell)]
+    return [move for cell in self.valid_borders(player) for move in self.valid_moves_for_cell(cell)]
 
   def valid_moves_for_cell(self, cell):
     possible_movements = [(cell.row, 4), (cell.row, 0), (4, cell.column), (0, cell.column)]
-    filter(lambda t: t != (cell.row, cell.column), possible_movements)
+    return list(filter(lambda t: t != (cell.row, cell.column) and t[0] != t[1], possible_movements))
 
   def apply_move(self, player, move):
     current_pos = BORDER_INDEXES[move[0]]
@@ -29,13 +29,13 @@ class Quixo:
   def should_move_row(self, move):
     target_row = BORDER_INDEXES[move[0]][0]
     future_row = BORDER_INDEXES[move[1]][0]
-    target_row == future_row
+    return target_row == future_row
 
   def should_move_row_from_left(self, move):
-    BORDER_INDEXES[move[1]][1] == 0 # if the future column is 0, should move in this direction -> 
+    return BORDER_INDEXES[move[1]][1] == 0 # if the future column is 0, should move in this direction -> 
 
   def should_move_column_from_top(self, move):
-    BORDER_INDEXES[move[1]][0] == 0 # if the future row is 0, should move from top to bottom
+    return BORDER_INDEXES[move[1]][0] == 0 # if the future row is 0, should move from top to bottom
 
   def move_row(self, move):
     if(self.should_move_row_from_left(move)):
@@ -97,11 +97,12 @@ class Quixo:
 
   def show(self):
     print('\n')
+    print('---------------------')
     for row in self.board:
-      [print('|', cell.show(), '', end = '') for cell in row ]
+      [print('|', cell.symbol_to_show(), '', end = '') for cell in row ]
       print('|', end = '')
       print('')
-    print('-----------------------------')
+    print('---------------------')
     
 
 class Cell:
@@ -113,8 +114,14 @@ class Cell:
   def update_symbol(self, player):
     self.symbol = player
 
-  def show(self):
-    print(self.symbol)
+  def symbol_to_show(self):
+    if self.symbol == 'empty':
+      return 'W'
+    return self.symbol
+
+  def update_pos(self, row, column):
+    self.row = row
+    self.column = column
 
   def index(self):
     if (self.row, self.column) in BORDER_INDEXES:
@@ -122,4 +129,11 @@ class Cell:
     None
 
   def is_valid_border(self, player):
-    self.symbol == 'empty' or self.symbol == player
+    return self.symbol == 'empty' or self.symbol == player
+
+
+# bla = Quixo()
+# bla.show()
+# print('all_valid_moves(x)', bla.all_valid_moves('x'))
+# bla.apply_move('x', (4, 0))
+# bla.show()
