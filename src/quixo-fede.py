@@ -76,7 +76,7 @@ class Quixo:
       to_swap_cell.update_pos(x, y)
       self.board[x][y] = to_swap_cell
       self.board[x][y + direction] = current_cell
-      to_swap_cell = (x, y + direction)
+      current_pos = (x, y + direction)
 
   def move_column_to_direction(self, move, direction): # direction = +1 | -1 
     # +1 = to bottom
@@ -93,7 +93,7 @@ class Quixo:
       to_swap_cell.update_pos(x, y)
       self.board[x][y] = to_swap_cell
       self.board[x + direction][y] = current_cell
-      to_swap_cell = (x + direction, y)
+      current_pos = (x + direction, y)
 
   def show(self):
     print('\n')
@@ -132,8 +132,8 @@ class Cell:
     return self.symbol == 'empty' or self.symbol == player
 
 
-# bla = Quixo()
-# bla.show()
-# print('all_valid_moves(x)', bla.all_valid_moves('x'))
-# bla.apply_move('x', (4, 0))
-# bla.show()
+bla = Quixo()
+bla.show()
+print('all_valid_moves(x)', bla.all_valid_moves('x'))
+bla.apply_move('x', (11, 8))
+bla.show()
