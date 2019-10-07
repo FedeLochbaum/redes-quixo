@@ -8,14 +8,17 @@ class Quixo:
     self.board = [[Cell(row, column) for row in range(5)] for column in range(5)]
 
   def valid_borders(self, player):
-    return list(filter(lambda cell: cell.is_valid_border(player), map(lambda t: self.board[t[0]][t[1]], BORDER_INDEXES)))
+    return list(filter(lambda cell: cell.is_valid_target(player), map(lambda t: self.board[t[0]][t[1]], BORDER_INDEXES)))
+
+  def all_valid_targets(self, player):
+    return list(map(lambda cell: cell.index(), self.valid_borders(player)))
 
   def all_valid_moves(self, player):
     return [move for cell in self.valid_borders(player) for move in self.valid_moves_for_cell(cell)]
 
   def valid_moves_for_cell(self, cell):
     possible_movements = [(cell.row, 4), (cell.row, 0), (4, cell.column), (0, cell.column)]
-    return list(filter(lambda t: t != (cell.row, cell.column) and t[0] != t[1], possible_movements))
+    return list(set(filter(lambda t: t != (cell.row, cell.column) and t[0] != t[1], possible_movements)))
 
   def apply_move(self, player, move):
     current_pos = BORDER_INDEXES[move[0]]
@@ -126,5 +129,5 @@ class Cell:
       return BORDER_INDEXES.index((self.row, self.column))
     None
 
-  def is_valid_border(self, player):
+  def is_valid_target(self, player):
     return self.symbol == 'empty' or self.symbol == player
