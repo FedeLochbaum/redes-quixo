@@ -21,25 +21,63 @@ class QuixoTest(unittest.TestCase):
     expected_targets = [0, 3, 5, 6, 9, 12, 13, 14, 15]
     self.assertEqual(sorted(to_game(game_state).all_valid_targets('X')), expected_targets)
   
-  # TODO
   # def test_all_valid_moves(self):
   #   game_state =               [['X', 'O', 'O', 'X', 'O'],
   #                               ['X', 'W', 'W', 'W', 'X'],
   #                               ['X', 'W', 'W', 'W', 'W'],
   #                               ['W', 'W', 'W', 'W', 'O'],
   #                               ['W', 'O', 'O', 'X', 'O']]
-  #   expected_valid_moves = [(4, 0), (0, 4), (3, 4), (4, 0), (0, 1), (4, 0), (0, 2), (4, 0), (3, 0), (0, 4), (4, 3), (0, 4), (4, 2), (0, 4), (4, 1), (0, 4)]
+  #   expected_valid_moves = [(4, 0), (0, 4), (4, 3), (0, 4), (1, 0), (0, 4), (2, 0), (0, 4), (0, 3), (4, 0), (3, 4), (4, 0), (2, 4), (4, 0), (1, 4), (4, 0)]
   #   self.assertEqual(to_game(game_state).all_valid_moves('X'), expected_valid_moves)
     
 
-  def test_should_move_row(self):
-    2
+  def test_should_move_row_true(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    self.assertTrue(to_game(game_state).should_move_row((0, 4)))
 
-  def test_should_move_row_from_left(self):
-    2
-  
-  def test_should_move_column_from_top(self):
-    2
+  def test_should_move_row_false(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    self.assertFalse(to_game(game_state).should_move_row((0, 12)))
+
+  def test_should_move_row_from_left_true(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    self.assertTrue(to_game(game_state).should_move_row_from_left((4, 0)))
+
+  def test_should_move_row_from_left_false(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    self.assertFalse(to_game(game_state).should_move_row_from_left((0, 4)))
+
+  def test_should_move_column_from_top_true(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    self.assertTrue(to_game(game_state).should_move_column_from_top((12, 0)))
+
+  def test_should_move_column_from_top_false(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    self.assertFalse(to_game(game_state).should_move_column_from_top((0, 12)))
 
   def test_apply_move(self):
     2
@@ -52,7 +90,7 @@ def to_game(matrix):
   for i_row in range(len(matrix)):
     for i_column in range(len(matrix[i_row])):
       cell = quixo.board[i_row][i_column]
-      current_value = matrix[i_column][i_row]
+      current_value = matrix[i_row][i_column]
       cell.update_symbol('empty' if current_value == 'W' else current_value)
   return quixo
 

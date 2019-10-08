@@ -5,7 +5,7 @@ BORDER_INDEXES = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4),
 
 class Quixo:
   def __init__(self):
-    self.board = [[Cell(row, column) for row in range(5)] for column in range(5)]
+    self.board = [[Cell(row, column) for column in range(5)] for row in range(5)]
 
   def valid_borders(self, player):
     return list(filter(lambda cell: cell.is_valid_target(player), map(lambda t: self.board[t[0]][t[1]], BORDER_INDEXES)))
