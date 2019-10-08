@@ -160,6 +160,42 @@ class QuixoTest(unittest.TestCase):
     game.apply_move('X', (12, 0))
     self.assertEqual(to_simple_structure(game), expected_game)
 
+  def test_is_game_over_false(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['X', 'O', 'O', 'X', 'O']]
+
+    self.assertFalse(to_game(game_state).is_game_over((0, 0), 'X'))
+
+  def test_is_game_over_true_veritcal(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['X', 'W', 'W', 'W', 'O'],
+                                ['X', 'O', 'O', 'X', 'O']]
+
+    self.assertTrue(to_game(game_state).is_game_over((0, 0), 'X'))
+
+  def test_is_game_over_true_diagonal(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'X', 'W', 'W', 'X'],
+                                ['X', 'W', 'X', 'W', 'W'],
+                                ['O', 'W', 'W', 'X', 'O'],
+                                ['X', 'O', 'O', 'X', 'X']]
+
+    self.assertTrue(to_game(game_state).is_game_over((0, 0), 'X'))
+
+  def test_is_game_over_true_horizontal(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'O', 'W', 'W', 'X'],
+                                ['X', 'X', 'X', 'X', 'X'],
+                                ['O', 'W', 'W', 'X', 'O'],
+                                ['X', 'O', 'O', 'X', 'X']]
+
+    self.assertTrue(to_game(game_state).is_game_over((2, 0), 'X'))
+
 def to_simple_structure(game):
   return list(map(lambda row: list(map(lambda cell: cell.symbol_to_show(), row)), game.board))
 

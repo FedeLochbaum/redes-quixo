@@ -1,3 +1,5 @@
+from utils_fede import check
+
 BORDER_INDEXES = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4),
                   (1, 4), (2, 4), (3, 4), (4, 4),
                   (4, 3), (4, 2), (4, 1), (4, 0),
@@ -16,6 +18,9 @@ class Quixo:
   def all_valid_moves(self, player):
     return [move for cell in self.valid_borders(player) for move in self.valid_moves_for_cell(cell)]
 
+  def is_game_over(self, pos, player):
+    return check(player, pos, self.board)
+
   def valid_moves_for_cell(self, cell):
     possible_movements = [
       (cell.index(), BORDER_INDEXES.index((cell.row, 4))),
@@ -33,7 +38,7 @@ class Quixo:
       self.move_row(move)
     else:
       self.move_column(move)
-  
+
   def should_move_row(self, move):
     target_row = BORDER_INDEXES[move[0]][0]
     future_row = BORDER_INDEXES[move[1]][0]
