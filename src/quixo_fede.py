@@ -17,8 +17,13 @@ class Quixo:
     return [move for cell in self.valid_borders(player) for move in self.valid_moves_for_cell(cell)]
 
   def valid_moves_for_cell(self, cell):
-    possible_movements = [(cell.row, 4), (cell.row, 0), (4, cell.column), (0, cell.column)]
-    return list(set(filter(lambda t: t != (cell.row, cell.column) and t[0] != t[1], possible_movements)))
+    possible_movements = [
+      (cell.index(), BORDER_INDEXES.index((cell.row, 4))),
+      (cell.index(), BORDER_INDEXES.index((cell.row, 0))), 
+      (cell.index(), BORDER_INDEXES.index((0, cell.column))),
+      (cell.index(), BORDER_INDEXES.index((4, cell.column)))]
+
+    return list(filter(lambda move: move[1] != cell.index(), possible_movements))
 
   def apply_move(self, player, move):
     current_pos = BORDER_INDEXES[move[0]]

@@ -20,16 +20,33 @@ class QuixoTest(unittest.TestCase):
 
     expected_targets = [0, 3, 5, 6, 9, 12, 13, 14, 15]
     self.assertEqual(sorted(to_game(game_state).all_valid_targets('X')), expected_targets)
+
+  def test_valid_moves_for_cell_1(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    game = to_game(game_state)
+    self.assertEqual(sorted(game.valid_moves_for_cell(game.board[0][0])), [(0, 4), (0, 12)])
+
+  def test_valid_moves_for_cell_2(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    game = to_game(game_state)
+    self.assertEqual(sorted(game.valid_moves_for_cell(game.board[0][2])), [(2, 0), (2, 4), (2, 10)])
   
-  # def test_all_valid_moves(self):
-  #   game_state =               [['X', 'O', 'O', 'X', 'O'],
-  #                               ['X', 'W', 'W', 'W', 'X'],
-  #                               ['X', 'W', 'W', 'W', 'W'],
-  #                               ['W', 'W', 'W', 'W', 'O'],
-  #                               ['W', 'O', 'O', 'X', 'O']]
-  #   expected_valid_moves = [(4, 0), (0, 4), (4, 3), (0, 4), (1, 0), (0, 4), (2, 0), (0, 4), (0, 3), (4, 0), (3, 4), (4, 0), (2, 4), (4, 0), (1, 4), (4, 0)]
-  #   self.assertEqual(to_game(game_state).all_valid_moves('X'), expected_valid_moves)
-    
+  def test_all_valid_moves(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    expected_valid_moves = [(0, 4), (0, 12), (3, 4), (3, 0), (3, 9), (5, 15), (5, 4), (5, 8), (6, 14), (6, 4), (6, 8), (9, 8), (9, 12), (9, 3), (12, 8), (12, 0), (13, 7), (13, 0), (13, 12), (14, 6), (14, 0), (14, 12), (15, 5), (15, 0), (15, 12)]
+    self.assertEqual(to_game(game_state).all_valid_moves('X'), expected_valid_moves)
 
   def test_should_move_row_true(self):
     game_state =               [['X', 'O', 'O', 'X', 'O'],
