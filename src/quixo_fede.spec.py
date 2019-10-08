@@ -79,8 +79,69 @@ class QuixoTest(unittest.TestCase):
                                 ['W', 'O', 'O', 'X', 'O']]
     self.assertFalse(to_game(game_state).should_move_column_from_top((0, 12)))
 
-  def test_apply_move(self):
-    2
+  def test_apply_move_a_row_from_left(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+
+    expected_game =            [['O', 'O', 'X', 'O', 'X'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    game = to_game(game_state)
+    game.apply_move('X', (0, 4))
+    self.assertEqual(to_simple_structure(game), expected_game)
+
+  def test_apply_move_a_row_from_right(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+
+    expected_game =            [['O', 'X', 'O', 'O', 'X'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    game = to_game(game_state)
+    game.apply_move('O', (4, 0))
+    self.assertEqual(to_simple_structure(game), expected_game)
+
+  def test_apply_move_a_colum_from_top(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+
+    expected_game =            [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['W', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['X', 'O', 'O', 'X', 'O']]
+    game = to_game(game_state)
+    game.apply_move('X', (0, 12))
+    self.assertEqual(to_simple_structure(game), expected_game)
+
+  def test_apply_move_a_colum_from_bottom(self):
+    game_state =               [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['W', 'W', 'W', 'W', 'O'],
+                                ['X', 'O', 'O', 'X', 'O']]
+
+    expected_game =            [['X', 'O', 'O', 'X', 'O'],
+                                ['X', 'W', 'W', 'W', 'X'],
+                                ['X', 'W', 'W', 'W', 'W'],
+                                ['X', 'W', 'W', 'W', 'O'],
+                                ['W', 'O', 'O', 'X', 'O']]
+    game = to_game(game_state)
+    game.apply_move('X', (12, 0))
+    self.assertEqual(to_simple_structure(game), expected_game)
 
 def to_simple_structure(game):
   return list(map(lambda row: list(map(lambda cell: cell.symbol_to_show(), row)), game.board))
