@@ -21,6 +21,10 @@ class Quixo:
   def is_game_over(self, pos, player):
     return check(player, pos, self.board)
 
+  def game_over(self):
+    # Missing a good implementation (O(n))
+    None
+
   def valid_moves_for_cell(self, cell):
     possible_movements = [
       (cell.index(), BORDER_INDEXES.index((cell.row, 4))),
