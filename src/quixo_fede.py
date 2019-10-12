@@ -1,4 +1,4 @@
-from utils_fede import check
+from utils_fede import check, all_the_same_elements
 
 BORDER_INDEXES = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4),
                   (1, 4), (2, 4), (3, 4), (4, 4),
@@ -22,8 +22,22 @@ class Quixo:
     return check(player, pos, self.board)
 
   def game_over(self):
-    # Missing a good implementation (O(n))
-    None
+    won_in_any_row = any(map(lambda row: all_the_same_elements(row), self.board))
+    won_in_any_column = any(map(lambda column: all_the_same_elements(column), self.columns()))
+    won_in_left_diagonal = all_the_same_elements(self.left_diagonal())
+    won_in_right_diagonal = all_the_same_elements(self.right_diagonal())
+    return won_in_any_row or won_in_any_column or won_in_left_diagonal or won_in_right_diagonal
+
+  def columns(self):
+    return [[self.board[j][i] for j in range(5)] for i in range(5)]
+
+  def left_diagonal(self):
+    # starting at lower left corner
+    return [self.board[4 - i][i] for i in range(5)]
+
+  def right_diagonal(self):
+    # starting at upper left corner
+    return [self.board[i][i] for i in range(5)]
 
   def valid_moves_for_cell(self, cell):
     possible_movements = [
