@@ -27,5 +27,3 @@ def alphabeta(node, depth, alpha, beta, player, h):
       if alpha >= beta:
         break # alpha cut - off
   return value
-
-# Missing implement the heuristic

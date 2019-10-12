@@ -8,6 +8,7 @@ BORDER_INDEXES = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4),
 class Quixo:
   def __init__(self):
     self.board = [[Cell(row, column) for column in range(5)] for row in range(5)]
+    self.stack_of_moves = []
 
   def valid_borders(self, player):
     return list(filter(lambda cell: cell.is_valid_target(player), map(lambda t: self.board[t[0]][t[1]], BORDER_INDEXES)))
@@ -51,6 +52,8 @@ class Quixo:
   def apply_move(self, player, move):
     current_pos = BORDER_INDEXES[move[0]]
     self.board[current_pos[0]][current_pos[1]].update_symbol(player)
+    # Missing do a checking if the move is valid
+    self.stack_of_moves.append(move)
 
     if(self.should_move_row(move)):
       self.move_row(move)
