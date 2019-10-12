@@ -1,6 +1,6 @@
 import unittest
-from quixo_fede import Quixo, Cell
-from utils_fede import to_simple_structure
+from quixo import Quixo, Cell
+from utils import to_simple_structure
 
 class QuixoTest(unittest.TestCase):
   def test_the_board_is_created_empty(self):

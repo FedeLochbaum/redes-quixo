@@ -1,4 +1,4 @@
-from utils_fede import check, all_the_same_elements, to_simplify
+from utils import check, all_the_same_elements, to_simplify
 
 BORDER_INDEXES = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4),
                   (1, 4), (2, 4), (3, 4), (4, 4),

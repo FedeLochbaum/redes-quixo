@@ -9,7 +9,7 @@ def alphabeta(node, depth, alpha, beta, player, h):
     return h(node)
   if player == MAX:
     value = -inf
-    for move in node.all_valid_moves('X'): # I am not sure if we should pass X | O
+    for move in node.all_valid_moves('X'):
       child = deepcopy(node)
       child.apply_move('X', move)
       value = max(value, alphabeta(child, depth - 1, alpha, beta, -player, h))
