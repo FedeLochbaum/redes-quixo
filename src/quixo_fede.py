@@ -1,4 +1,4 @@
-from utils_fede import check, all_the_same_elements
+from utils_fede import check, all_the_same_elements, to_simplify
 
 BORDER_INDEXES = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4),
                   (1, 4), (2, 4), (3, 4), (4, 4),
@@ -22,10 +22,10 @@ class Quixo:
     return check(player, pos, self.board)
 
   def game_over(self):
-    won_in_any_row = any(map(lambda row: all_the_same_elements(row), self.board))
-    won_in_any_column = any(map(lambda column: all_the_same_elements(column), self.columns()))
-    won_in_left_diagonal = all_the_same_elements(self.left_diagonal())
-    won_in_right_diagonal = all_the_same_elements(self.right_diagonal())
+    won_in_any_row = any(map(lambda row: all_the_same_elements(to_simplify(row)), self.board))
+    won_in_any_column = any(map(lambda column: all_the_same_elements(to_simplify(column)), self.columns()))
+    won_in_left_diagonal = all_the_same_elements(to_simplify(self.left_diagonal()))
+    won_in_right_diagonal = all_the_same_elements(to_simplify(self.right_diagonal()))
     return won_in_any_row or won_in_any_column or won_in_left_diagonal or won_in_right_diagonal
 
   def columns(self):

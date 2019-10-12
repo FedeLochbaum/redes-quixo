@@ -1,5 +1,6 @@
 import unittest
 from quixo_fede import Quixo, Cell
+from utils_fede import to_simple_structure
 
 class QuixoTest(unittest.TestCase):
   def test_the_board_is_created_empty(self):
@@ -195,9 +196,6 @@ class QuixoTest(unittest.TestCase):
                                 ['X', 'O', 'O', 'X', 'X']]
 
     self.assertTrue(to_game(game_state).is_game_over((2, 0), 'X'))
-
-def to_simple_structure(game):
-  return list(map(lambda row: list(map(lambda cell: cell.symbol_to_show(), row)), game.board))
 
 def to_game(matrix):
   quixo = Quixo()

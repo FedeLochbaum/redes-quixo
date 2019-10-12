@@ -1,6 +1,12 @@
 def all_the_same_elements(elements):
   return all(x == y for x, y in zip(elements, elements[1:]))
 
+def to_simple_structure(game):
+  return list(map(lambda row: to_simplify(row), game.board))
+
+def to_simplify(elems):
+  return list(map(lambda cell: cell.symbol_to_show(), elems))
+
 max_size = 5
 list(map(lambda x: (x * -1, 0), range(max_size)))
 north = list(map(lambda x: (x * -1, 0), range(max_size)))
