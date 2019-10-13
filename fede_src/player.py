@@ -1,7 +1,11 @@
 from quixo import Quixo
 from copy import deepcopy
 import timeit
-from alpha_beta import alphabeta
+from math import inf
+from copy import deepcopy
+
+MAX = 1
+MIN = -1
 
 time_millis = lambda: 1000 * timeit.default_timer()
 
@@ -39,15 +43,43 @@ class QuixoPlayer:
     depth = 1
     try:
       while (True):
-        move = alphabeta(self.game, depth)
+        move = self.alphabeta(self.game, depth, self.player)
         if move is not (-1, -1):
           best_move = move
-          depth += 1 
+          depth += 1
           if self.time_left() < self.timer_threshold:
             return best_move
 
     except SearchTimeout:
       return best_move
+  
+  def alphabeta(self, game, depth, player, h, alpha = -inf, beta = inf):
+    if depth == 0 or game.game_over():
+      return h(game)
+    if player == MAX:
+      value = -inf
+      legal_moves = game.all_valid_moves('X')
+      best_current_move = legal_moves[0] # TODO: Look how we can return the best possible movement
+      for move in legal_moves:
+        self.is_time_over()
+        child = deepcopy(game)
+        child.apply_move('X', move)
+        value = max(value, self.alphabeta(child, depth - 1, alpha, beta, -player, h))
+        alpha = max(alpha, value)
+        if alpha >= beta:
+          break
+      return value
+    else:
+      value = inf
+      for move in game.all_valid_moves('O'):
+        self.is_time_over()
+        child = deepcopy(game)
+        child.apply_move('O', move)
+        value = min(value, self.alphabeta(child, depth - 1, alpha, beta, -player, h))
+        beta  = min(beta, value)
+        if alpha >= beta:
+          break
+      return value
 
 class SearchTimeout(Exception):
   pass
