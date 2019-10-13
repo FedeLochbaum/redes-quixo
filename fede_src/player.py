@@ -54,32 +54,64 @@ class QuixoPlayer:
       return best_move
   
   def alphabeta(self, game, depth, player, h, alpha = -inf, beta = inf):
-    if depth == 0 or game.game_over():
-      return h(game)
     if player == MAX:
-      value = -inf
       legal_moves = game.all_valid_moves('X')
-      best_current_move = legal_moves[0] # TODO: Look how we can return the best possible movement
+      if not legal_moves:
+        return (-1, -1)
+      self.best_current_move = legal_moves[0]
       for move in legal_moves:
         self.is_time_over()
         child = deepcopy(game)
         child.apply_move('X', move)
-        value = max(value, self.alphabeta(child, depth - 1, alpha, beta, -player, h))
-        alpha = max(alpha, value)
-        if alpha >= beta:
-          break
-      return value
+        score = self.min_value(child, depth - 1, h, alpha, beta)
+        if score > alpha:
+          alpha = score
+          self.best_current_move = move
+      return self.best_current_move
     else:
-      value = inf
-      for move in game.all_valid_moves('O'):
+      legal_moves = game.all_valid_moves('O')
+      if not legal_moves:
+        return (-1, -1)
+      self.best_current_move = legal_moves[0]
+      for move in legal_moves:
         self.is_time_over()
         child = deepcopy(game)
         child.apply_move('O', move)
-        value = min(value, self.alphabeta(child, depth - 1, alpha, beta, -player, h))
-        beta  = min(beta, value)
-        if alpha >= beta:
-          break
-      return value
+        score = self.max_value(child, depth - 1, h, alpha, beta)
+        if score < beta:
+          beta = score
+          self.best_current_move = move
+      return self.best_current_move
+
+  def min_value(self, game, depth, h, alpha, beta):
+    if depth == 0:
+      return h(game)
+    legal_moves = game.all_valid_moves('O')
+    for move in legal_moves:
+      self.is_time_over()
+      child = deepcopy(game)
+      child.apply_move('O', move)
+      score = self.max_value(child, depth - 1, h, alpha, beta)
+      if score < beta:
+          beta = score 
+          if beta <= alpha:
+              break       
+    return beta
+
+  def max_value(self, game, depth, h, alpha, beta):
+    if depth == 0:
+      return h(game)
+    legal_moves = game.all_valid_moves('X')
+    for move in legal_moves:
+      self.is_time_over()
+      child = deepcopy(game)
+      child.apply_move('X', move)
+      score = self.min_value(child, depth - 1, h, alpha, beta)
+      if score > alpha:
+          alpha = score 
+          if alpha >= beta:
+            break       
+    return alpha
 
 class SearchTimeout(Exception):
   pass
