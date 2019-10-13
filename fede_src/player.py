@@ -58,7 +58,7 @@ class QuixoPlayer:
       legal_moves = game.all_valid_moves('X')
       if not legal_moves:
         return (-1, -1)
-      self.best_current_move = legal_moves[0]
+      best_current_move = legal_moves[0]
       for move in legal_moves:
         self.is_time_over()
         child = deepcopy(game)
@@ -66,13 +66,13 @@ class QuixoPlayer:
         score = self.min_value(child, depth - 1, h, alpha, beta)
         if score > alpha:
           alpha = score
-          self.best_current_move = move
-      return self.best_current_move
+          best_current_move = move
+      return best_current_move
     else:
       legal_moves = game.all_valid_moves('O')
       if not legal_moves:
         return (-1, -1)
-      self.best_current_move = legal_moves[0]
+      best_current_move = legal_moves[0]
       for move in legal_moves:
         self.is_time_over()
         child = deepcopy(game)
@@ -80,8 +80,8 @@ class QuixoPlayer:
         score = self.max_value(child, depth - 1, h, alpha, beta)
         if score < beta:
           beta = score
-          self.best_current_move = move
-      return self.best_current_move
+          best_current_move = move
+      return best_current_move
 
   def min_value(self, game, depth, h, alpha, beta):
     if depth == 0:
@@ -93,9 +93,9 @@ class QuixoPlayer:
       child.apply_move('O', move)
       score = self.max_value(child, depth - 1, h, alpha, beta)
       if score < beta:
-          beta = score 
-          if beta <= alpha:
-              break       
+        beta = score 
+        if beta <= alpha:
+          break       
     return beta
 
   def max_value(self, game, depth, h, alpha, beta):
@@ -108,9 +108,9 @@ class QuixoPlayer:
       child.apply_move('X', move)
       score = self.min_value(child, depth - 1, h, alpha, beta)
       if score > alpha:
-          alpha = score 
-          if alpha >= beta:
-            break       
+        alpha = score 
+        if alpha >= beta:
+          break       
     return alpha
 
 class SearchTimeout(Exception):
