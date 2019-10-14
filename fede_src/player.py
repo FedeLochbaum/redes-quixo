@@ -6,13 +6,12 @@ from copy import deepcopy
 
 def heuristic(game):
   # Simple heuristic
-  print(game)
   return 2
 
 time_millis = lambda: 1000 * timeit.default_timer()
 
 class QuixoPlayer:
-  def __init__(self, search_depth = 3, timeout = 10.):
+  def __init__(self, search_depth = 3, timeout = 3.):
     self.game = Quixo()
     self.player = None
     self.timer_threshold = timeout
@@ -23,8 +22,9 @@ class QuixoPlayer:
     self.player = player
   
   def playerPlay(self):
-    if self.player == None: self.set_player('X')
+    if self.player == None: self.set_player('O')
     move_start = time_millis()
+    # time_left represent the left time, calculating the passed time (time_millis() - move_start)
     time_left = lambda : self.timer_threshold - (time_millis() - move_start)
 
     move = self.get_move(time_left)
@@ -32,13 +32,14 @@ class QuixoPlayer:
     return move
 
   def oponentPlay(self, move):
-    if self.player == None: self.set_player('O')
-    if move[0] == -1 or move[1] == -1:
-      return Exception('Invalid move')
-    self.game.apply_move('X' if self.player == 'O' else 'O', move)
+    if self.player == None: self.set_player('X')
+
+    if move[0] == -1 or move[1] == -1: raise Exception('Invalid move')
+    oponent_player = 'O' if self.player == 'X' else 'X'
+    self.game.apply_move(oponent_player, move)
 
   def is_time_over(self):
-    if self.time_left() < self.timer_threshold:
+    if self.time_left() <= 0:
       raise SearchTimeout()
 
   def get_move(self, time_left):
@@ -51,7 +52,7 @@ class QuixoPlayer:
         if move is not (-1, -1):
           best_move = move
           depth += 1
-          if self.time_left() < self.timer_threshold:
+          if self.time_left() <= 0:
             return best_move
 
     except SearchTimeout:
@@ -124,9 +125,8 @@ class SearchTimeout(Exception):
 player1 = QuixoPlayer()
 player2 = QuixoPlayer()
 player1.game.show()
-while(True):#not player1.game.game_over()):
-  move_player1 = player1.playerPlay()
-  player2.oponentPlay(move_player1)
 
-  move_player2 = player2.playerPlay()
-  player1.oponentPlay(move_player2)
+while(True):#not player1.game.game_over()):
+  player2.oponentPlay(player1.playerPlay())
+  player1.oponentPlay(player2.playerPlay())
+  player1.game.show()
