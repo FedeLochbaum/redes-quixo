@@ -44,16 +44,15 @@ class QuixoPlayer:
 
   def get_move(self, time_left):
     self.time_left = time_left
-    best_move = (-1, -1)
+    best_move = self.game.all_valid_moves(self.player)[0]
     depth = 1
     try:
       while (True):
         move = self.alphabeta(self.game, depth, self.player, heuristic = heuristic)
-        if move is not (-1, -1):
-          best_move = move
-          depth += 1
-          if self.time_left() <= 0:
-            return best_move
+        best_move = move
+        depth += 1
+        if self.time_left() <= 0:
+          return best_move
 
     except SearchTimeout:
       return best_move
