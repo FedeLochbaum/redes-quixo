@@ -11,7 +11,7 @@ def heuristic(game):
 time_millis = lambda: 1000 * timeit.default_timer()
 
 class QuixoPlayer:
-  def __init__(self, search_depth = 3, timeout = 3.):
+  def __init__(self, search_depth = 3, timeout = 100.):
     self.game = Quixo()
     self.player = None
     self.timer_threshold = timeout
@@ -126,7 +126,7 @@ player1 = QuixoPlayer()
 player2 = QuixoPlayer()
 player1.game.show()
 
-while(True):#not player1.game.game_over()):
+while(not player1.game.game_over()):
   player2.oponentPlay(player1.playerPlay())
   player1.oponentPlay(player2.playerPlay())
   player1.game.show()

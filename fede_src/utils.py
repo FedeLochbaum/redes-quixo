@@ -1,5 +1,5 @@
 def all_the_same_elements(elements):
-  return all(x == y and (x != 'W' or x != 'empty')  for x, y in zip(elements, elements[1:]))
+  return all(x == y and x != 'W' and y != 'W' for x, y in zip(elements, elements[1:]))
 
 def to_simple_structure(game):
   return list(map(lambda row: to_simplify(row), game.board))
