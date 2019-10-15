@@ -7,6 +7,16 @@ def to_simple_structure(game):
 def to_simplify(elems):
   return list(map(lambda cell: cell.symbol_to_show(), elems))
 
+def count_of_neighbors(elems, player):
+  # elems [Cell]
+  res = 0
+  for cell in elems:
+    if cell.symbol_to_show() == player:
+      res += 1
+    else:
+      res = 0
+  return res
+
 max_size = 5
 list(map(lambda x: (x * -1, 0), range(max_size)))
 north = list(map(lambda x: (x * -1, 0), range(max_size)))

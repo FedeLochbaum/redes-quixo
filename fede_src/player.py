@@ -4,14 +4,61 @@ import timeit
 from math import inf
 from copy import deepcopy
 import random
+from utils import to_simple_structure, count_of_neighbors
 
-def random_heuristic(game, player):
+edges = [(0, 0), (0, 4), (4, 4), (4, 0)]
+
+def random_heuristic(game, player, oponent):
   return random.random()
+
+def count_of_tokens(game):
+  res = (0, 0)
+  for i_row in range(len(game.board)):
+    for i_column in range(len(game.board[i_row])):
+      value = game.board[i_row][i_column].symbol_to_show()
+      if(value == 'O'):
+        res = (res[0] + 1, res[1])
+
+      if(value == 'X'):
+        res = (res[0], res[1] + 1)
+  return res
+
+def count_of_edges(game, player):
+  return sum(map(lambda pair: 1 if game.board[pair[0]][pair[1]].symbol_to_show() == player else 0, edges), 0)
+
+def in_center(game, player):
+  return game.board[2][2].symbol_to_show() == player
+
+def max_count_of_neighbors_in_rows(game, player):
+  return max([count_of_neighbors(row, player) for row in game.board])
+
+def max_count_of_neighbors_in_columns(game, player):
+  return max([count_of_neighbors(column, player) for column in game.columns()])
+
+def max_count_of_neighbors_in_diagonals(game, player):
+  return max([count_of_neighbors(game.left_diagonal(), player), count_of_neighbors(game.right_diagonal(), player)])
+
+def max_count_of_neighbors(game, player):
+  mconir = max_count_of_neighbors_in_rows(game, player)
+  mconic = max_count_of_neighbors_in_columns(game, player)
+  mconid = max_count_of_neighbors_in_diagonals(game, player)
+  return max([mconir, mconic, mconid])
+
+def heuristic_1(game, player, oponent):
+  player_index = 0 if player == 'O' else 1
+  oponent_index = 1 if player_index == 0 else 0
+
+  cot = count_of_tokens(game)
+  count_of_tokens_value = (cot[player_index] - cot[oponent_index]) * 1.2 # I think that this value has 20% more importance
+  coe = count_of_edges(game, player)
+  center_importance = 16 * (1 if in_center(game, player) else 0)
+  return count_of_tokens_value + center_importance + max_count_of_neighbors(game, player) * max(1, coe)
+
 
 time_millis = lambda: 1000 * timeit.default_timer()
 
 class QuixoPlayer:
-  def __init__(self, search_depth = 3, timeout = 100., heuristic = random_heuristic):
+  def __init__(self, search_depth = 3, timeout = 20., heuristic = heuristic_1):
     self.game = Quixo()
     self.player = None
     self.timer_threshold = timeout
@@ -90,7 +137,7 @@ class QuixoPlayer:
 
   def min_value(self, game, depth, alpha, beta):
     if depth == 0:
-      return self.heuristic(game, 'O')
+      return self.heuristic(game, 'O', 'X')
     legal_moves = game.all_valid_moves('O')
     for move in legal_moves:
       self.is_time_over()
@@ -105,7 +152,7 @@ class QuixoPlayer:
 
   def max_value(self, game, depth, alpha, beta):
     if depth == 0:
-      return self.heuristic(game, 'X')
+      return self.heuristic(game, 'X', 'O')
     legal_moves = game.all_valid_moves('X')
     for move in legal_moves:
       self.is_time_over()
