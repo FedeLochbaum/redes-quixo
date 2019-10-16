@@ -1,3 +1,5 @@
+import random
+
 def all_the_same_elements(elements):
   return all(x == y and x != 'W' and y != 'W' for x, y in zip(elements, elements[1:]))
 
@@ -44,3 +46,6 @@ def has_cardinal(player, cardinal, pos, game):
     x, y = (pos[0] + tup[0], pos[1] + tup[1])
     won &= game[x][y].symbol == player
   return won
+
+def random_heuristic(game, player, oponent):
+  return random.random()
