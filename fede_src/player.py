@@ -6,7 +6,7 @@ from copy import deepcopy
 import random
 from utils import to_simple_structure, count_of_neighbors
 
-edges = [(0, 0), (0, 4), (4, 4), (4, 0)]
+strategic_points = [(0, 0), (0, 4), (4, 4), (4, 0), (0, 2), (2, 4), (4, 2), (2, 0)]
 
 def random_heuristic(game, player, oponent):
   return random.random()
@@ -23,8 +23,8 @@ def count_of_tokens(game):
         res = (res[0], res[1] + 1)
   return res
 
-def count_of_edges(game, player):
-  return sum(map(lambda pair: 1 if game.board[pair[0]][pair[1]].symbol_to_show() == player else 0, edges), 0)
+def count_of_strategic_points(game, player):
+  return sum(map(lambda pair: 1 if game.board[pair[0]][pair[1]].symbol_to_show() == player else 0, strategic_points), 0)
 
 def in_center(game, player):
   return game.board[2][2].symbol_to_show() == player
@@ -50,9 +50,9 @@ def heuristic_1(game, player, oponent):
 
   cot = count_of_tokens(game)
   count_of_tokens_value = (cot[player_index] - cot[oponent_index]) * 1.2 # I think that this value has 20% more importance
-  coe = count_of_edges(game, player)
+  cosp = count_of_strategic_points(game, player)
   center_importance = 16 * (1 if in_center(game, player) else 0)
-  return count_of_tokens_value + center_importance + max_count_of_neighbors(game, player) * max(1, coe)
+  return count_of_tokens_value + center_importance + max_count_of_neighbors(game, player) * max(1, cosp)
 
 
 time_millis = lambda: 1000 * timeit.default_timer()
