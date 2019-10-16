@@ -6,6 +6,14 @@ from copy import deepcopy
 import random
 from utils import to_simple_structure, count_of_neighbors
 
+points = [
+  [5, 1, 3 ,1 ,5],
+  [1, 2, 1, 2, 1],
+  [3, 1, 9, 1, 3],
+  [1, 2, 1, 2, 1],
+  [5, 1, 3, 1, 5]
+]
+
 strategic_points = [(0, 0), (0, 4), (4, 4), (4, 0), (0, 2), (2, 4), (4, 2), (2, 0)]
 
 def random_heuristic(game, player, oponent):
@@ -53,6 +61,15 @@ def heuristic_1(game, player, oponent):
   cosp = count_of_strategic_points(game, player)
   center_importance = 16 * (1 if in_center(game, player) else 0)
   return count_of_tokens_value + center_importance + max_count_of_neighbors(game, player) * max(1, cosp)
+
+def heuristic_2(game, player, oponent):
+  res = 0
+  for i_row in range(len(game.board)):
+    for i_column in range(len(game.board[i_row])):
+      value = game.board[i_row][i_column].symbol_to_show()
+      if(value == player):
+        res += points[i_row][i_column]
+  return res
 
 
 time_millis = lambda: 1000 * timeit.default_timer()
@@ -170,7 +187,7 @@ class SearchTimeout(Exception):
 
 
 player1 = QuixoPlayer() #Player O
-player2 = QuixoPlayer() #Player X
+player2 = QuixoPlayer(heuristic=heuristic_2) #Player X
 player1.game.show()
 count_of_moves = 0
 while(not player1.game.game_over()):
