@@ -47,7 +47,7 @@ class QuixoPlayer:
     best_move = self.game.all_valid_moves(self.player)[0]
     depth = 1
     try:
-      while (True):
+      while (depth <= self.search_depth):
         move = self.alphabeta(self.game, depth, self.player)
         best_move = move
         depth += 1
