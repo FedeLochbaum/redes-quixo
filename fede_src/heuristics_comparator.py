@@ -4,11 +4,11 @@ from heuristic_2 import heuristic_2
 from player import QuixoPlayer
 import matplotlib.pyplot as plt
 
-heuristic1 = heuristic_2 # Red
-heuristic2 = heuristic_1 # Blue
+heuristic1 = heuristic_1 # Red
+heuristic2 = heuristic_2 # Blue
 
-timeouts = sorted(set([x if (x % 10  == 0) else 100 for x in range(100, 1001)]))
-search_depths = list([x for x in range(1, 5)])
+timeouts = sorted(set([float(x) if (x % 50  == 0) else 50 for x in range(50, 1001)]))
+search_depths = list([x for x in range(1, 6)])
 
 plt.ylabel('maximum depth')
 plt.xlabel('maximum timeout')
@@ -21,11 +21,12 @@ for depth in search_depths:
     player2 = QuixoPlayer(depth, timeout, heuristic2) #  X
     game = play(player1, player2)
     if (game.game_over('O')): # If O is the winner
-      plt.plot([timeout], [depth], 'rx', c='r')
+      plt.plot(timeout, depth, c='red', marker = 'o', linewidth=1.0)
     else:
       if (game.game_over('X')): # If X is the winner
-        plt.plot([timeout], [depth], 'rx', c='b')
+        plt.plot(timeout, depth, c='blue', marker = 'o', linewidth=1.0)
       else: # Tie
-        plt.plot([timeout], [depth], 'rx', c='black')
+        plt.plot(timeout, depth, c='black', marker = 'o', linewidth=1.0)
+
 
 plt.show()
