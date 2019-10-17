@@ -120,16 +120,3 @@ class QuixoPlayer:
 
 class SearchTimeout(Exception):
   pass
-
-
-# player1 = QuixoPlayer(search_depth=2, heuristic=heuristic_2) #Player O
-# player2 = QuixoPlayer(search_depth=4, timeout=1000., heuristic=heuristic_1) #Player X
-# player1.game.show()
-# count_of_moves = 0
-# while(not player1.game.game_over()):
-#   player2.oponentPlay(player1.playerPlay())
-#   player1.oponentPlay(player2.playerPlay())
-#   count_of_moves += 1
-#   player1.game.show()
-
-# print('count_of_moves: ', count_of_moves)
