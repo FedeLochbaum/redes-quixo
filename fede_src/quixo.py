@@ -22,12 +22,20 @@ class Quixo:
   def is_game_over(self, pos, player):
     return check(player, pos, self.board)
 
-  def game_over(self):
-    won_in_any_row = any(map(lambda row: all_the_same_elements(to_simplify(row)), self.board))
-    won_in_any_column = any(map(lambda column: all_the_same_elements(to_simplify(column)), self.columns()))
-    won_in_left_diagonal = all_the_same_elements(to_simplify(self.left_diagonal()))
-    won_in_right_diagonal = all_the_same_elements(to_simplify(self.right_diagonal()))
-    return won_in_any_row or won_in_any_column or won_in_left_diagonal or won_in_right_diagonal
+  def game_over(self, player = None):
+    return self.won_in_any_row(player) or self.won_in_any_column(player) or self.won_in_left_diagonal(player) or self.won_in_right_diagonal(player)
+
+  def won_in_any_row(self, player = None):
+    return any(map(lambda row: all_the_same_elements(to_simplify(row), player), self.board))
+
+  def won_in_any_column(self, player = None):
+    return any(map(lambda column: all_the_same_elements(to_simplify(column), player), self.columns()))
+
+  def won_in_left_diagonal(self, player = None):
+    return all_the_same_elements(to_simplify(self.left_diagonal()), player)
+
+  def won_in_right_diagonal(self, player = None):
+    return all_the_same_elements(to_simplify(self.right_diagonal()), player)
 
   def columns(self):
     return [[self.board[j][i] for j in range(5)] for i in range(5)]

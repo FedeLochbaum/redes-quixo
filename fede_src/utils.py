@@ -1,7 +1,7 @@
 import random
 
-def all_the_same_elements(elements):
-  return all(x == y and x != 'W' and y != 'W' for x, y in zip(elements, elements[1:]))
+def all_the_same_elements(elements, player = None):
+  return all(x == y and x != 'W' and y != 'W' for x, y in zip(elements, elements[1:])) if(player == None) else all(x == y and x == player and y == player for x, y in zip(elements, elements[1:]))
 
 def to_simple_structure(game):
   return list(map(lambda row: to_simplify(row), game.board))
@@ -49,3 +49,9 @@ def has_cardinal(player, cardinal, pos, game):
 
 def random_heuristic(game, player, oponent):
   return random.random()
+
+def play(player1, player2):
+  while(not player1.game.game_over()):
+    player2.oponentPlay(player1.playerPlay())
+    player1.oponentPlay(player2.playerPlay())
+  return player1.game
