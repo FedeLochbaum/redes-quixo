@@ -22,7 +22,7 @@ class QuixoPlayer:
     self.player = player
   
   def playerPlay(self):
-    if self.player == None: self.set_player('O')
+    if self.player == None: self.set_player('X')
     move_start = time_millis()
     # time_left represent the left time, calculating the passed time (time_millis() - move_start)
     time_left = lambda : self.timer_threshold - (time_millis() - move_start)
@@ -32,10 +32,10 @@ class QuixoPlayer:
     return move
 
   def oponentPlay(self, move):
-    if self.player == None: self.set_player('X')
+    if self.player == None: self.set_player('O')
 
     if move[0] == -1 or move[1] == -1: raise Exception('Invalid move')
-    oponent_player = 'O' if self.player == 'X' else 'X'
+    oponent_player = 'X' if self.player == 'O' else 'O'
     self.game.apply_move(oponent_player, move)
 
   def is_time_over(self):
@@ -68,7 +68,7 @@ class QuixoPlayer:
         self.is_time_over()
         child = deepcopy(game)
         child.apply_move('X', move)
-        score = self.min_value(child, depth - 1, alpha, beta)
+        score = self.max_value(child, depth - 1, alpha, beta)
         if score > alpha:
           alpha = score
           best_current_move = move
@@ -82,7 +82,7 @@ class QuixoPlayer:
         self.is_time_over()
         child = deepcopy(game)
         child.apply_move('O', move)
-        score = self.max_value(child, depth - 1, alpha, beta)
+        score = self.min_value(child, depth - 1, alpha, beta)
         if score < beta:
           beta = score
           best_current_move = move
@@ -90,27 +90,27 @@ class QuixoPlayer:
 
   def min_value(self, game, depth, alpha, beta):
     if depth == 0:
-      return self.heuristic(game, 'O', 'X')
-    legal_moves = game.all_valid_moves('O')
-    for move in legal_moves:
-      self.is_time_over()
-      child = deepcopy(game)
-      child.apply_move('O', move)
-      score = self.max_value(child, depth - 1, alpha, beta)
-      if score < beta:
-        beta = score 
-        if beta <= alpha:
-          break       
-    return beta
-
-  def max_value(self, game, depth, alpha, beta):
-    if depth == 0:
       return self.heuristic(game, 'X', 'O')
     legal_moves = game.all_valid_moves('X')
     for move in legal_moves:
       self.is_time_over()
       child = deepcopy(game)
       child.apply_move('X', move)
+      score = self.max_value(child, depth - 1, alpha, beta)
+      if score < beta:
+        beta = score 
+        if beta <= alpha:
+          break
+    return beta
+
+  def max_value(self, game, depth, alpha, beta):
+    if depth == 0:
+      return self.heuristic(game, 'X', 'O')
+    legal_moves = game.all_valid_moves('O')
+    for move in legal_moves:
+      self.is_time_over()
+      child = deepcopy(game)
+      child.apply_move('O', move)
       score = self.min_value(child, depth - 1, alpha, beta)
       if score > alpha:
         alpha = score 

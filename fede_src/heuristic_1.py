@@ -7,10 +7,10 @@ def count_of_tokens(game):
   for i_row in range(len(game.board)):
     for i_column in range(len(game.board[i_row])):
       value = game.board[i_row][i_column].symbol_to_show()
-      if(value == 'O'):
+      if(value == 'X'):
         res = (res[0] + 1, res[1])
 
-      if(value == 'X'):
+      if(value == 'O'):
         res = (res[0], res[1] + 1)
   return res
 
@@ -36,7 +36,7 @@ def max_count_of_neighbors(game, player):
   return max([mconir, mconic, mconid])
 
 def heuristic_1(game, player, oponent):
-  player_index = 0 if player == 'O' else 1
+  player_index = 0 if player == 'X' else 1
   oponent_index = 1 if player_index == 0 else 0
 
   cot = count_of_tokens(game)
