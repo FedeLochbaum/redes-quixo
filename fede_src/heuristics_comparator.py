@@ -19,7 +19,11 @@ for depth in search_depths:
     print(' depth: ', depth, ' timeout: ', timeout)
     player1 = QuixoPlayer(depth, timeout, heuristic1) #  X
     player2 = QuixoPlayer(depth, timeout, heuristic2) #  O
-    game = play(player1, player2)
+    try:
+      game = play(player1, player2)
+    except Exception:
+      plt.plot(timeout, depth, c='black', marker = 'o', linewidth=1.0)
+      continue
     if (game.game_over('X')): # If X is the winner
       plt.plot(timeout, depth, c='red', marker = 'o', linewidth=1.0)
     else:

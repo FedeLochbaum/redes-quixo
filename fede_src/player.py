@@ -1,6 +1,7 @@
 from quixo import Quixo
 from copy import deepcopy
 import timeit
+import random
 from math import inf
 from copy import deepcopy
 from utils import to_simple_structure, count_of_neighbors, random_heuristic
@@ -53,7 +54,7 @@ class QuixoPlayer:
         depth += 1
         if self.time_left() <= 0:
           return best_move
-        return best_move
+      return best_move
 
     except SearchTimeout:
       return best_move

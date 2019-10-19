@@ -1,4 +1,7 @@
 import random
+import timeit
+
+time_millis = lambda: 1000 * timeit.default_timer()
 
 def all_the_same_elements(elements, player = None):
   return all(x == y and x != 'W' and y != 'W' for x, y in zip(elements, elements[1:])) if(player == None) else all(x == y and x == player and y == player for x, y in zip(elements, elements[1:]))
@@ -47,11 +50,17 @@ def has_cardinal(player, cardinal, pos, game):
     won &= game[x][y].symbol == player
   return won
 
-def random_heuristic(game, player, oponent):
+def random_heuristic(game, player = 'X', oponent = 'O'):
   return random.random()
 
-def play(player1, player2):
+def play(player1, player2, timeout = 10000.):
+  start_time = time_millis()
+  current_time = start_time
   while(not player1.game.game_over()):
     player2.oponentPlay(player1.playerPlay())
     player1.oponentPlay(player2.playerPlay())
+    current_time = time_millis() 
+    if (current_time - start_time) > timeout:
+      raise Exception('Timeout')
+
   return player1.game
