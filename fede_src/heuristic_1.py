@@ -35,7 +35,7 @@ def max_count_of_neighbors(game, player):
   mconid = max_count_of_neighbors_in_diagonals(game, player)
   return max([mconir, mconic, mconid])
 
-def heuristic_1(game, player, oponent):
+def heuristic_1(game, player = 'X', oponent = 'O'):
   player_index = 0 if player == 'X' else 1
   oponent_index = 1 if player_index == 0 else 0
 

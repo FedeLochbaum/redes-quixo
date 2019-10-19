@@ -6,7 +6,7 @@ points = [
   [5, 1, 3, 1, 5]
 ]
 
-def heuristic_2(game, player, oponent):
+def heuristic_2(game, player = 'X', oponent = 'O'):
   res = 0
   for i_row in range(len(game.board)):
     for i_column in range(len(game.board[i_row])):

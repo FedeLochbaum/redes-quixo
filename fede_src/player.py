@@ -90,7 +90,7 @@ class QuixoPlayer:
 
   def min_value(self, game, depth, alpha, beta):
     if depth == 0:
-      return self.heuristic(game, 'X', 'O')
+      return self.heuristic(game)
     legal_moves = game.all_valid_moves('X')
     for move in legal_moves:
       self.is_time_over()
@@ -98,14 +98,14 @@ class QuixoPlayer:
       child.apply_move('X', move)
       score = self.max_value(child, depth - 1, alpha, beta)
       if score < beta:
-        beta = score 
+        beta = score
         if beta <= alpha:
           break
     return beta
 
   def max_value(self, game, depth, alpha, beta):
     if depth == 0:
-      return self.heuristic(game, 'X', 'O')
+      return self.heuristic(game)
     legal_moves = game.all_valid_moves('O')
     for move in legal_moves:
       self.is_time_over()
