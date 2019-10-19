@@ -10,7 +10,6 @@ En la fecha de entrega del TP se hará una competencia entre los distintos algor
 
 ## Integrantes:
 
-Ivan
 Fede
 Jesus
 

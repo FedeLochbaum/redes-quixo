@@ -1,7 +1,7 @@
 from utils import random_heuristic, play
 from heuristic_1 import heuristic_1
 from heuristic_2 import heuristic_2
-from player import QuixoPlayer
+from lochbaum_laime_player import QuixoPlayer
 import matplotlib.pyplot as plt
 
 heuristic1 = heuristic_2 # Red
