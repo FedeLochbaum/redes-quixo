@@ -4,8 +4,8 @@ from heuristic_2 import heuristic_2
 from lochbaum_laime_player import QuixoPlayer
 import matplotlib.pyplot as plt
 
-heuristic1 = heuristic_2 # Red
-heuristic2 = heuristic_2 # Blue
+heuristic1 = heuristic_1 # Red
+heuristic2 = random_heuristic # Blue
 
 timeouts = sorted(set([float(x) if (x % 50  == 0) else 50 for x in range(50, 1001)]))
 search_depths = list([x for x in range(1, 6)])

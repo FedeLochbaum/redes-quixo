@@ -11,7 +11,7 @@ from heuristic_2 import heuristic_2
 time_millis = lambda: 1000 * timeit.default_timer()
 
 class QuixoPlayer:
-  def __init__(self, search_depth = 3, timeout = 20., heuristic = heuristic_1):
+  def __init__(self, search_depth = 2, timeout = 50., heuristic = heuristic_1):
     self.game = Quixo()
     self.player = None
     self.timer_threshold = timeout
@@ -28,16 +28,19 @@ class QuixoPlayer:
     # time_left represent the left time, calculating the passed time (time_millis() - move_start)
     time_left = lambda : self.timer_threshold - (time_millis() - move_start)
 
-    move = self.get_move(time_left)
-    self.game.apply_move(self.player, move)
-    return move
+    focus, target = self.get_move(time_left)
+    self.game.apply_move(self.player, (focus, target))
+    return focus + 1, target + 1 # To support the standard order
 
   def oponentPlay(self, move):
+    focus, target = move
     if self.player == None: self.set_player('O')
 
-    if move[0] == -1 or move[1] == -1: raise Exception('Invalid move')
     oponent_player = 'X' if self.player == 'O' else 'O'
-    self.game.apply_move(oponent_player, move)
+
+    if not (focus -1, target - 1) in self.game.all_valid_moves(oponent_player): raise Exception('Invalid move')
+
+    self.game.apply_move(oponent_player, (focus - 1, target - 1)) # To support the standard order
 
   def is_time_over(self):
     if self.time_left() <= 0:
